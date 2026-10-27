@@ -4,8 +4,8 @@ Agla is pre-ordering for campus canteens. Students order from their phone, pick 
 
 "Agla!" is what the counter shouts in an Indian canteen: next.
 
-- App: _add the Vercel URL after deploying_
-- API: _add the Render URL_/health
+- App: https://agla-lake.vercel.app
+- API: https://agla-api.onrender.com/health (free tier: the first request after a quiet spell can take a minute while it wakes)
 - Demo logins (password `agla-demo` for all three):
   - `student@demo.agla.app`: orders, live token, history
   - `kitchen@demo.agla.app`: the kitchen board, the counter, stock
