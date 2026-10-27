@@ -1,0 +1,17 @@
+# Backup pinger: keeps the free Render API from spinning down after 15 idle minutes.
+# cron-job.org is the main pinger; GitHub runs schedules late or skips them under load.
+# GitHub also pauses scheduled workflows after 60 days with no commits to the repo.
+name: Keep API awake
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      # A cold start takes about a minute, so allow retries before failing.
+      - run: curl -fsS --retry 5 --retry-delay 15 --retry-all-errors -m 90 https://agla-api.onrender.com/health
