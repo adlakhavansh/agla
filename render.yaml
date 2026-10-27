@@ -1,0 +1,37 @@
+# Render blueprint for the API. The app (client/) deploys to Vercel; this is the only Render service.
+services:
+  - type: web
+    name: agla-api
+    runtime: node
+    # Free works for a demo: cron-job.org calls POST /internal/sweep every 5 minutes, which
+    # wakes the server and runs the sweeper. Starter ($7) never sleeps if the kitchen board
+    # must stay live all day.
+    plan: free
+    # Closest Render region to India.
+    region: singapore
+    rootDir: server
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_DB
+        value: agla
+      - key: JWT_SECRET
+        generateValue: true
+      # Shared with the cron that calls POST /internal/sweep.
+      - key: INTERNAL_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false
+      # Exact app origin, no trailing slash, e.g. https://agla.vercel.app
+      - key: CLIENT_URL
+        sync: false
+      # Razorpay test keys; leave empty to run with pay-at-counter only.
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false

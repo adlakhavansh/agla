@@ -1,0 +1,27 @@
+# Rebuilds the demo canteen every night, so its 8 weeks of history always end yesterday and
+# the prep plan and reports have something current to show. Real canteens are untouched.
+name: Refresh demo
+
+on:
+  schedule:
+    - cron: "30 20 * * *" # 02:00 IST
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci --omit=dev
+      - run: node scripts/seed.js --reset
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_DB: agla

@@ -1,0 +1,162 @@
+/*
+  The loud half of Agla: the shop sign, the drenched board-green hero, the ticket story,
+  the proof, and the moment your number is called. Product screens stay in styles.css.
+*/
+
+/* ── LED dot-matrix signs ───────────────────────────────────────────── */
+.dotmatrix { background: var(--glass); overflow: hidden; }
+.dotmatrix canvas { display: block; width: 100%; }
+.shop-sign { padding: 7px 0 5px; border-bottom: 4px solid var(--housing); }
+.low-sign { padding: 6px 0 4px; margin-top: 22px; border-top: 3px solid var(--housing); }
+
+/* ── Buttons that sit on board green ───────────────────────────────── */
+.btn.turmeric { background: var(--turmeric); border-color: var(--turmeric); color: var(--board-deep); }
+.btn.turmeric:hover:not(:disabled) { background: #ffc61a; border-color: #ffc61a; }
+.btn.on-green { background: transparent; border-color: color-mix(in oklab, var(--on-board) 45%, transparent); color: var(--on-board); }
+.btn.on-green:hover { border-color: var(--on-board); background: rgb(255 255 255 / 0.06); }
+
+/* ── Hero: the painted signboard, drenched ──────────────────────────── */
+.hero { background: var(--board); color: var(--on-board); overflow: clip; }
+.landing-bar { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; }
+.landing-bar nav { display: flex; gap: 26px; }
+.landing-bar nav a { color: var(--on-board); font-weight: 600; text-decoration: none; }
+.landing-bar nav a:hover { color: var(--turmeric); }
+.hero .logo { box-shadow: inset 0 0 0 2px var(--turmeric); }
+
+.hero-inner {
+  max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 64px) 24px clamp(72px, 9vw, 120px);
+  display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center;
+}
+.hero-copy { display: grid; gap: 26px; }
+.hero h1 {
+  font: 800 clamp(2.9rem, 6.4vw, 6rem)/0.94 var(--display);
+  letter-spacing: -0.025em; color: var(--turmeric); max-width: 11ch;
+}
+.hero-copy p { font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.6; color: var(--on-board-soft); max-width: 44ch; }
+
+.hero-figure { position: relative; margin: 0; }
+.hero-figure img {
+  display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: 14px; box-shadow: 0 40px 70px -40px rgb(0 0 0 / 0.8);
+}
+.calling { position: absolute; left: -40px; bottom: -48px; }
+.calling-housing {
+  display: grid; justify-items: center; gap: 8px; padding: 16px 24px 22px; border-radius: 16px; background: var(--glass);
+  box-shadow: 0 0 0 8px var(--housing), 0 0 0 10px #2a302e, 0 30px 60px -24px rgb(0 0 0 / 0.7);
+}
+.calling-housing .segments { max-width: 100%; height: auto; }
+.calling-label, .token-label { color: rgb(255 255 255 / 0.6); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; }
+.calling-shout {
+  position: absolute; right: -34px; top: -30px; padding: 6px 16px 0; border-radius: 10px;
+  background: var(--turmeric); color: var(--board-deep); font: 800 2.1rem/1.25 var(--display);
+  transform: rotate(7deg) scale(0.4); opacity: 0;
+  transition: transform 0.45s var(--ease-expo), opacity 0.2s;
+}
+.calling-shout.show { opacity: 1; transform: rotate(7deg) scale(1); }
+
+/* ── Story: one ticket, pinned, while the steps scroll past ─────────── */
+.story { max-width: 1240px; margin: 0 auto; padding: clamp(72px, 9vw, 128px) 24px 40px; }
+.story-title { font-size: clamp(2rem, 4vw, 3rem); max-width: 18ch; margin-bottom: 48px; }
+.story-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(32px, 6vw, 96px); }
+.story-pin { position: sticky; top: 14vh; align-self: start; }
+.story-ticket {
+  display: grid; justify-items: center; gap: 14px; padding: 28px 24px 24px;
+  background: var(--panel); border-radius: var(--r-lg); box-shadow: 0 1px 0 rgb(27 35 32 / 0.06), 0 24px 48px -28px rgb(27 35 32 / 0.45);
+  text-align: center;
+}
+.story-headline { font: 700 1.6rem/1.15 var(--display); min-height: 2.3em; display: grid; align-items: center; transition: color 0.3s; }
+.story-ticket.at-ready .story-headline { color: var(--good); }
+.story-pickup { color: var(--soft); }
+.story-ticket .progress { width: 100%; grid-template-columns: repeat(3, 1fr); text-align: left; }
+.story-ticket.at-ready .code span { background: var(--board); color: var(--turmeric); }
+.story-ticket .code span { transition: background 0.4s var(--ease-expo), color 0.4s; }
+.story-steps { display: grid; counter-reset: step; }
+.story-steps li { counter-increment: step; min-height: 62vh; display: grid; align-content: center; gap: 14px; opacity: 0.32; transition: opacity 0.4s var(--ease-expo); }
+.story-steps li.active { opacity: 1; }
+.story-steps li::before {
+  content: counter(step); display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px;
+  background: var(--board); color: var(--turmeric); font: 800 1.7rem/1 var(--display); padding-top: 4px;
+}
+.story-steps h3 { font: 800 clamp(1.7rem, 3vw, 2.4rem)/1.05 var(--display); letter-spacing: -0.015em; }
+.story-steps p { font-size: 1.1rem; line-height: 1.6; color: var(--ink-2); max-width: 46ch; }
+
+/* ── Proof: plates in the bin, as dots ──────────────────────────────── */
+.proof {
+  background: var(--board-deep); color: var(--on-board);
+  padding: clamp(72px, 9vw, 120px) max(24px, calc((100vw - 1192px) / 2));
+  display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 88px); align-items: center;
+}
+.proof h2 { font-size: clamp(2.2rem, 4.4vw, 3.4rem); color: var(--turmeric); margin-bottom: 18px; }
+.proof-copy p { color: var(--on-board-soft); line-height: 1.65; max-width: 48ch; }
+.proof-note { margin-top: 14px; font-size: 0.88rem; color: color-mix(in oklab, var(--on-board) 62%, var(--board-deep)); }
+.plates { display: grid; gap: 28px; }
+.plate-row { margin: 0; display: grid; gap: 10px; }
+.plate-row figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: 0.95rem; color: var(--on-board-soft); }
+.plate-row figcaption strong { color: var(--on-board); font-variant-numeric: tabular-nums; }
+.plate-row:last-of-type figcaption strong { color: var(--turmeric); }
+.plate-dots { display: flex; flex-wrap: wrap; gap: 4px; }
+.plate-dots i { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in oklab, var(--on-board) 70%, var(--board-deep)); }
+.plate-row:last-of-type .plate-dots i { background: var(--turmeric); }
+
+/* ── For canteens ───────────────────────────────────────────────────── */
+.for-canteens { max-width: 1240px; margin: 0 auto; padding: clamp(72px, 9vw, 120px) 24px; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 48px; }
+.for-canteens h2 { font-size: clamp(2rem, 3.6vw, 2.8rem); margin-bottom: 10px; }
+.for-canteens dl { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 40px; margin: 0; }
+.for-canteens dt { font: 700 1.25rem/1.2 var(--display); margin-bottom: 6px; }
+.for-canteens dd { margin: 0; color: var(--ink-2); line-height: 1.6; }
+
+/* ── The shout ──────────────────────────────────────────────────────── */
+.shout-band {
+  background: var(--turmeric); color: var(--board-deep);
+  padding: clamp(56px, 7vw, 96px) max(24px, calc((100vw - 1192px) / 2));
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 48px; overflow: clip;
+}
+.shout-word { font: 800 clamp(4.5rem, 14vw, 10rem)/0.85 var(--display); letter-spacing: -0.03em; transform: rotate(-4deg); }
+.shout-band h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 18px; }
+.landing-foot { max-width: 1240px; margin: 0 auto; padding: 28px 24px 44px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+
+/* ── Ticket: printed from the board, and the called-out moment ──────── */
+.token-housing.small { padding: 10px 18px 14px; box-shadow: 0 0 0 5px var(--housing), 0 0 0 6px #2a302e; }
+.token-housing.big { padding: 18px 30px 26px; box-shadow: 0 0 0 10px var(--housing), 0 0 0 12px #2a302e, 0 40px 80px -30px rgb(0 0 0 / 0.7); }
+.token-housing.big .segments { max-width: 78vw; height: auto; }
+@keyframes print {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(-14px); }
+  to { clip-path: inset(0 0 0 0); transform: none; }
+}
+.ticket .code-card { animation: print 0.9s var(--ease-expo) both; }
+.ticket .receipt { animation: print 0.9s 0.18s var(--ease-expo) both; }
+
+.called-out {
+  position: fixed; inset: 0; z-index: 50; overflow-y: auto;
+  display: grid; place-content: center; justify-items: center; gap: 22px; padding: 32px 20px;
+  background: var(--board); color: var(--on-board); text-align: center;
+  animation: called 0.5s var(--ease-expo);
+}
+@keyframes called { from { opacity: 0; transform: scale(1.04); } }
+.called-shout { font: 800 clamp(3.4rem, 12vw, 6rem)/0.9 var(--display); color: var(--turmeric); transform: rotate(-5deg); }
+.called-out h2 { font-size: clamp(1.5rem, 4.5vw, 2.2rem); }
+.called-code { color: var(--on-board-soft); font-size: 1.1rem; }
+.called-code strong { display: block; margin-bottom: 8px; font: 800 clamp(2.4rem, 9vw, 3.4rem)/1 var(--display); letter-spacing: 0.18em; color: var(--turmeric); }
+
+/* ── Menu: the canteen's painted board ──────────────────────────────── */
+.canteen-band { background: var(--board); color: var(--on-board); padding-top: clamp(24px, 4vw, 44px); }
+.canteen-band .board-head { max-width: 1180px; margin: 0 auto; padding: 0 20px; gap: 10px; }
+.canteen-band h1 { font: 800 clamp(2.4rem, 6vw, 4.4rem)/0.95 var(--display); letter-spacing: -0.02em; color: var(--turmeric); }
+.canteen-band .board-meta { color: var(--on-board-soft); font-size: 1rem; }
+.canteen-band .open-state { color: var(--on-board); }
+.canteen-band .open-state.open { color: #8fe3b2; }
+.canteen-band .staff-link { color: var(--turmeric); }
+.canteen-band:not(:has(.low-sign)) { padding-bottom: 28px; }
+
+@media (max-width: 960px) {
+  .hero-inner, .story-grid, .proof, .for-canteens, .for-canteens dl { grid-template-columns: 1fr; }
+  .hero-figure { margin: 0 8px 40px; }
+  .calling { left: -8px; bottom: -40px; transform: scale(0.75); transform-origin: left bottom; }
+  .calling-shout { right: -20px; }
+  .story-pin { position: static; }
+  .story-steps li { min-height: 0; opacity: 1; padding: 28px 0; }
+  .shout-word { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-steps li { opacity: 1; }
+}
